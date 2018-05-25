@@ -4,7 +4,9 @@
 
 package io.flutter.plugins.firebaseadmob;
 
+import android.os.Bundle;
 import android.util.Log;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,6 +113,14 @@ class AdRequestBuilderFactory {
     Boolean childDirected =
         getTargetingInfoBoolean("childDirected", targetingInfo.get("childDirected"));
     if (childDirected != null) builder.tagForChildDirectedTreatment(childDirected);
+
+    Boolean personalized =
+        getTargetingInfoBoolean("personalized", targetingInfo.get("personalized"));
+    if (!personalized) {
+      Bundle extras = new Bundle();
+      extras.putString("npa", "1");
+      builder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
+    }
 
     String requestAgent = getTargetingInfoString("requestAgent", targetingInfo.get("requestAgent"));
     if (requestAgent != null) builder.setRequestAgent(requestAgent);

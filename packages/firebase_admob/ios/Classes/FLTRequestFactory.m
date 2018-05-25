@@ -115,6 +115,12 @@ NSDictionary *_targetingInfo;
     [request tagForChildDirectedTreatment:childDirected.boolValue];
   }
 
+  NSNumber *personalized = [self targetingInfoBoolForKey:@"personalized" info:_targetingInfo];
+  if (personalized != nil) {
+    let extras = GADExtras() extras.additionalParameters =
+        ["npa":personalized] request.register(extras)
+  }
+
   NSString *requestAgent = [self targetingInfoStringForKey:@"requestAgent" info:_targetingInfo];
   if (requestAgent != nil) {
     request.requestAgent = requestAgent;
